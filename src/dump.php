@@ -59,10 +59,10 @@ namespace Tomo {
                         echo ($showArgType ? strlen($arg) : ""). " ";
                         break;
                     case "array":
-                        echo count($arg) . " <span class='op'>[</span> ";
+                        echo count($arg) . " <span class='op'>[</span> <span class='op'>{</span> <a href='#' class='dropdown-arrow'></a> ";
                         break;
                     case "object":
-                        echo "<span class='oh'>#" . spl_object_id($arg) . "</span> <span class='op'>{</span> ";
+                        echo "<span class='oh'>#" . spl_object_id($arg) . "</span> <span class='op'>{</span> <span class='op'>{</span> <a href='#' class='dropdown-arrow'></a> ";
                         break;
                     default:
                         break;
@@ -116,7 +116,19 @@ namespace Tomo {
                     $this->row($arg);
                 echo "</div>";
             }
+            // Inject dropdown handlers      
+            $this->renderArrowHandlers();
             echo "</body></html>";
+        }
+
+        /**
+         * This function renders the css and js required to handle the toggle arrows
+         * 
+         * @return void
+         */
+        private function renderArrowHandlers(){
+            echo "<style>.dropdown-arrow{color:#fff;text-decoration:none;opacity:0.4;}.dropdown-arrow:hover{opacity:1;}.dropdown-arrow::after{content:'▼';}.collapse .dropdown-arrow::after{content:'►';}.collapse .row{display:none;}</style>";
+            echo '<script>for(var els=document.querySelectorAll(".dropdown-arrow"),i=0;i<els.length;++i)els[i].addEventListener("click",toggle);function toggle(e){e.target.parentElement.classList.contains("collapse")?e.target.parentElement.classList.remove("collapse"):e.target.parentElement.classList.add("collapse"),e.preventDefault()}</script>';
         }
 
     }
